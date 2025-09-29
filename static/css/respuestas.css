@@ -1,0 +1,11 @@
+.respuesta-board .board-inner { background: #fffef6; }
+.answer { 
+  white-space: pre-wrap; 
+  line-height: 1.5; 
+  font-size: 16px; 
+}
+.answer h1, .answer h2, .answer h3 { font-family: 'Chewy', cursive; }
+.answer ul { padding-left: 18px; }
+.answer strong { color: #e65100; }
+
+

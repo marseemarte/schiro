@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GATTO - Aprendé Jugando</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">GATTO</div>
+    <nav class="main-nav">
+      <a href="#juegos" class="nav-chip chip-blue">Juegos</a>
+      <a href="#categorias" class="nav-chip chip-pink">Categorías</a>
+      <a href="#nosotros" class="nav-chip chip-green">Más sobre nosotros</a>
+    </nav>
+    <a href="#contacto" class="btn-top">Trabajemos juntos</a>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-left">
+        <img src="{{ url_for('static', filename='img/gatito.png') }}" alt="Gatito" class="cat-hero">
+      </div>
+      <div class="hero-right">
+        <h1>¡Hola, soy <span class="brand-accent">GATTO</span>!</h1>
+        <p class="subtitle">Estoy acá para ayudarte con tus tareas escolares,<br> ¿Empezamos?</p>
+        <form class="search-form" action="/buscar" method="POST">
+          <div class="search">
+            <span class="search-icon">🔎</span>
+            <input id="searchBox" name="duda" type="text" placeholder="¿Con qué te puedo ayudar?" required>
+          </div>
+        </form>
+        <div class="suggestions">
+          <button class="chip chip-orange">¿Cuáles son las capitales de Argentina?</button>
+          <button class="chip chip-orange">¿Cuáles son las capitales de Argentina? (región pampeana)</button>
+          <button class="chip chip-orange">¿Cuáles son las capitales de Argentina? (todo el país)</button>
+          <button class="chip chip-orange">¿Cuáles son las capitales de Argentina? (por provincia)</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="board" id="juegos">
+      <div class="board-inner">
+        <div class="board-left">
+          <h2 class="aprender-title"><span>Aprendé</span><br>Jugando</h2>
+        </div>
+        <div class="board-right">
+          <h3>¿Te animás a jugar y probar lo que sabés?</h3>
+          <p>Retá a tu cerebro con estos test escolares</p>
+          <div class="subjects">
+            <a href="#" class="subject pill-red">Matemática</a>
+            <a href="#" class="subject pill-blue">PDL</a>
+            <a href="#" class="subject pill-green">Cs. Naturales</a>
+            <a href="#" class="subject pill-orange">Cs. Sociales</a>
+            <a href="#" class="subject pill-purple">Ed. Física</a>
+            <a href="#" class="subject pill-sky">Inglés</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+</body>
+</html>
+
+

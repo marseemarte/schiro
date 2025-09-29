@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Respuesta - GATTO</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/respuestas.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">GATTO</div>
+    <nav class="main-nav">
+      <a href="/" class="nav-chip chip-blue">Nueva búsqueda</a>
+    </nav>
+    <a href="#" class="btn-top">Trabajemos juntos</a>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-left">
+        <img src="{{ url_for('static', filename='img/gatito.png') }}" alt="Gatito" class="cat-hero">
+      </div>
+      <div class="hero-right">
+        <h1>¡Esto es lo que encontré!</h1>
+        <form class="search-form" action="/buscar" method="POST">
+          <div class="search">
+            <span class="search-icon">🔎</span>
+            <input id="searchBox" name="duda" type="text" placeholder="Escribí otra duda" value="{{ duda }}" required>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="board respuesta-board">
+      <div class="board-inner">
+        <div class="board-right" style="grid-column: 1 / -1;">
+          <h3>Respuesta del profesor</h3>
+          <article class="answer">
+            {{ respuesta | safe }}
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+</body>
+</html>

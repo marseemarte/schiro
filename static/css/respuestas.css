@@ -1,11 +1,119 @@
-.respuesta-board .board-inner { background: #fffef6; }
-.answer { 
-  white-space: pre-wrap; 
-  line-height: 1.5; 
-  font-size: 16px; 
+.slider {
+  max-width: 800px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+  gap: 1rem;
 }
-.answer h1, .answer h2, .answer h3 { font-family: 'Chewy', cursive; }
-.answer ul { padding-left: 18px; }
-.answer strong { color: #e65100; }
 
+.slide-content {
+  min-height: 300px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  position: relative;
+}
 
+/* Estilos para los botones de navegación */
+.slider-btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: #FFB648;
+  color: white;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  box-shadow: 0 3px 8px rgba(255,182,72,0.3);
+}
+
+.slider-btn:hover:not(:disabled) {
+  transform: scale(1.1);
+}
+
+.slider-btn:disabled {
+  background: #e0e0e0;
+  box-shadow: none;
+}
+
+/* Indicador de slides */
+.slide-indicator {
+  margin-top: 1rem;
+  font-family: 'Chewy', cursive;
+  color: #666;
+  font-size: 1.2rem;
+}
+
+/* Iconos temáticos */
+.slide-content::before {
+  position: absolute;
+  top: -15px;
+  left: -15px;
+  font-size: 2rem;
+}
+
+.slide-content[data-slide="1"]::before { content: "📚"; }
+.slide-content[data-slide="2"]::before { content: "💡"; }
+.slide-content[data-slide="3"]::before { content: "🌟"; }
+.slide-content[data-slide="4"]::before { content: "🎮"; }
+
+/* Estilizado de texto */
+.highlight {
+  background: linear-gradient(transparent 50%, #FFE1A8 50%);
+  padding: 0 4px;
+}
+
+.important {
+  font-weight: 700;
+  color: #FF8A48;
+}
+
+/* Estilos para negritas y listas */
+.slide-content strong,
+.slide-content b {
+  font-weight: 700;
+  color: #FF8A48;
+}
+
+.list-item {
+  position: relative;
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.list-item::before {
+  content: "•";
+  color: #FFB648;
+  position: absolute;
+  left: 0;
+}
+
+/* Ocultar respuesta raw */
+.answer-raw {
+  display: none;
+}
+
+.board-inner {
+  display: block; /* Cambiamos de grid a block */
+  padding: 2rem;
+}
+
+.answer-content {
+  width: 100%; /* Ocupar todo el ancho disponible */
+  max-width: 1200px; /* Ancho máximo para mejor legibilidad */
+  margin: 0 auto; /* Centrar contenido */
+}
+
+/* Removemos los estilos de la imagen que ya no usaremos */
+.answer-image {
+  display: none;
+}

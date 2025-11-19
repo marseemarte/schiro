@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/respuesta.css">
 </head>
 <body>
   <header class="site-header">
@@ -37,10 +38,24 @@
 
     <section class="board respuesta-board">
       <div class="board-inner">
-        <div class="board-right" style="grid-column: 1 / -1;">
+        <div class="answer-content">
           <h3>Respuesta del profesor</h3>
           <article class="answer">
-            {{ respuesta | safe }}
+            <div id="answerRaw" class="answer-raw">{{ respuesta }}</div>
+            
+            <div class="slider" aria-live="polite">
+              <button id="prevBtn" class="slider-btn" aria-label="Anterior" title="Anterior">◀</button>
+              
+              <div>
+                <div class="slide-header">
+                  <h3 class="slide-title" id="slideTitle"></h3>
+                </div>
+                <div id="slideContent" class="slide-content" role="region" aria-live="polite"></div>
+                <div class="slide-indicator" id="slideIndicator">0 / 0</div>
+              </div>
+              
+              <button id="nextBtn" class="slider-btn" aria-label="Siguiente" title="Siguiente">▶</button>
+            </div>
           </article>
         </div>
       </div>
@@ -48,5 +63,115 @@
   </main>
 
   <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+
+  <script>
+    // Procesa la respuesta generada por la IA y la divide en 4 secciones:
+    // 1) Explicación más técnica
+    // 2) Explicación simple
+    // 3) Ejemplos cotidianos dinámicos
+    // 4) Desafío para practicar
+    (function () {
+      const rawEl = document.getElementById('answerRaw');
+      const contentEl = document.getElementById('slideContent');
+      const indicatorEl = document.getElementById('slideIndicator');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const titleEl = document.getElementById('slideTitle');
+
+      if (!rawEl) return;
+
+      // Tomamos el texto (sin HTML) para trabajar más robustamente
+      let rawText = rawEl.textContent || rawEl.innerText || '';
+      rawText = rawText.replace(/\r/g, ''); // normalizar saltos
+
+      // Intentamos dividir buscando "1)", "2)", "3)", "4)" (con lookahead)
+      let parts = rawText.split(/(?=\b[1-4]\)\s)/g).map(s => s.trim()).filter(Boolean);
+
+      // Si el modelo no devolvió los marcadores, tratamos de dividir por títulos comunes
+      if (parts.length < 4) {
+        // buscamos encabezados numerados con paréntesis o nombre de sección
+        parts = rawText.split(/(?=\n*(?:1\)|1\.|Explicaci[oó]n más técnica|Explicación más técnica))/i).map(s => s.trim()).filter(Boolean);
+      }
+
+      // Si aún no llegamos a 4, hacemos un fallback: dividir en 4 partes iguales
+      if (parts.length < 4) {
+        const lines = rawText.split('\n');
+        const chunkSize = Math.ceil(lines.length / 4) || 1;
+        parts = [];
+        for (let i = 0; i < 4; i++) {
+          const chunk = lines.slice(i * chunkSize, (i + 1) * chunkSize).join('\n').trim();
+          parts.push(chunk || '');
+        }
+      }
+
+      // Normalizamos: removemos el prefijo "1) " etc. en cada parte para una visual más limpia
+      parts = parts.map(p => p.replace(/^\d\)\s*/,'').trim());
+
+      let idx = 0;
+      const total = parts.length;
+
+      function render() {
+        let content = parts[idx] || '';
+        
+        // Aplicar formato al contenido
+        content = content
+          // Convertir asteriscos en negritas HTML
+          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+          .replace(/\*(.*?)\*/g, '<strong>$1</strong>')
+          
+          // Formatear listas manteniendo los guiones
+          .replace(/[-•]\s+(.*)/g, '<div class="list-item">$1</div>')
+          
+          // Agregar emojis contextuales
+          .replace(/\b(número|suma|resta|multiplicación|división)\b/gi, '🔢 $1')
+          .replace(/\b(planeta|tierra|sol|luna)\b/gi, '🌍 $1')
+          .replace(/\b(animal|animales)\b/gi, '🐾 $1')
+          .replace(/\b(planta|plantas|árbol|árboles)\b/gi, '🌱 $1');
+
+        contentEl.innerHTML = content;
+        contentEl.setAttribute('data-slide', idx + 1);
+        indicatorEl.innerHTML = `
+          <span style="color: #FFB648">Paso ${idx + 1}</span> de ${total}
+          ${getSlideEmoji(idx)}
+        `;
+        titleEl.innerHTML = `Parte ${idx + 1}: ${getSlideTitle(idx)}`;
+        
+        prevBtn.disabled = idx === 0;
+        nextBtn.disabled = idx === total - 1;
+      }
+
+      function getSlideEmoji(index) {
+        const emojis = ['📚', '💡', '🌟', '🎮'];
+        return emojis[index] || '';
+      }
+
+      function getSlideTitle(index) {
+        const titles = [
+          'Introducción',
+          'Respuesta para la carpeta',
+          'Explicación simple',
+          'Ejemplos cotidianos',
+          'Desafío para practicar'
+        ];
+        return titles[index] || '';
+      }
+
+      prevBtn.addEventListener('click', () => {
+        if (idx > 0) { idx--; render(); }
+      });
+      nextBtn.addEventListener('click', () => {
+        if (idx < total - 1) { idx++; render(); }
+      });
+
+      // Soporte flechas del teclado
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') { if (idx > 0) { idx--; render(); } }
+        if (e.key === 'ArrowRight') { if (idx < total - 1) { idx++; render(); } }
+      });
+
+      // Inicializamos
+      render();
+    })();
+  </script>
 </body>
 </html>

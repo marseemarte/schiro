@@ -22,6 +22,8 @@ No uses asteriscos, guiones ni markdown.
 
 Escribí SIEMPRE en español.
 
+Al menos UNA VEZ por respuesta, incluí un emoji relacionado con la enseñanza o el tema y color distinto en palabras clave.
+
 Separá las secciones con títulos (<h3>) y listas o párrafos (<ul>, <li>, <p>).
 
 Evitá texto plano largo y sin formato.

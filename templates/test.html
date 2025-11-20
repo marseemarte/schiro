@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GATTO - Test {{ materia }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="test-header">
+    <a href="{{ url_for('home') }}" class="brand">GATTO</a>
+    <a class="return-link" href="{{ url_for('home') }}">⬅ Volver al inicio</a>
+  </header>
+
+  <main class="test-page">
+    <div class="test-info">
+      <div>
+        <h1>{{ materia }}</h1>
+        <p class="subtitle level-row">
+          Nivel seleccionado: <span class="difficulty-chip">{{ nivel_label }}</span>
+          <a class="return-link restart-link" href="{{ url_for('test', materia=materia, nivel=nivel) }}">↻ Reiniciar desafío</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="quiz-area" data-total="{{ preguntas|length }}">
+      <div class="quiz-progress">
+        <span id="progressLabel">Pregunta 1 de {{ preguntas|length }}</span>
+        <div class="progress-track">
+          <div id="progressFill"></div>
+        </div>
+      </div>
+
+      <div class="question-card" id="activeQuestion">
+        <p class="question-label" id="questionLabel">Pregunta 1</p>
+        <h3 id="questionTitle">Preparando tu desafío...</h3>
+        <div class="options" id="optionsContainer"></div>
+        <div class="feedback" id="feedbackBox">
+          <span class="result" id="feedbackResult"></span>
+          <p class="tip" id="feedbackTip"></p>
+        </div>
+      </div>
+
+      <button id="nextButton" class="next-btn" disabled>Siguiente pregunta</button>
+    </div>
+
+    <section class="quiz-summary hidden" id="quizSummary">
+      <h2>¡Terminaste el desafío!</h2>
+      <p class="summary-text">Acertaste 0 de {{ preguntas|length }} preguntas.</p>
+      <div class="summary-actions">
+        <a class="return-link" href="{{ url_for('test', materia=materia, nivel=nivel) }}">🔁 Volver a intentarlo</a>
+        <a class="return-link" href="{{ url_for('home') }}">🏠 Ir al inicio</a>
+      </div>
+    </section>
+  </main>
+
+  <script id="quizData" type="application/json">{{ preguntas|tojson }}</script>
+  <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+</body>
+</html>

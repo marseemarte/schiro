@@ -53,17 +53,30 @@
           <h3>¿Te animás a jugar y probar lo que sabés?</h3>
           <p>Retá a tu cerebro con estos test escolares</p>
           <div class="subjects">
-            <a href="#" class="subject pill-red">Matemática</a>
-            <a href="#" class="subject pill-blue">PDL</a>
-            <a href="#" class="subject pill-green">Cs. Naturales</a>
-            <a href="#" class="subject pill-orange">Cs. Sociales</a>
-            <a href="#" class="subject pill-purple">Ed. Física</a>
-            <a href="#" class="subject pill-sky">Inglés</a>
+            <a href="{{ url_for('test', materia='Matemática') }}" data-materia="Matemática" class="subject pill-red subject-link">Matemática</a>
+            <a href="{{ url_for('test', materia='PDL') }}" data-materia="PDL" class="subject pill-blue subject-link">PDL</a>
+            <a href="{{ url_for('test', materia='Cs. Naturales') }}" data-materia="Cs. Naturales" class="subject pill-green subject-link">Cs. Naturales</a>
+            <a href="{{ url_for('test', materia='Cs. Sociales') }}" data-materia="Cs. Sociales" class="subject pill-orange subject-link">Cs. Sociales</a>
+            <a href="{{ url_for('test', materia='Ed. Física') }}" data-materia="Ed. Física" class="subject pill-purple subject-link">Ed. Física</a>
+            <a href="{{ url_for('test', materia='Inglés') }}" data-materia="Inglés" class="subject pill-sky subject-link">Inglés</a>
           </div>
         </div>
       </div>
     </section>
   </main>
+
+  <div id="levelModal" class="level-modal" aria-hidden="true">
+    <div class="level-modal__content" role="dialog" aria-labelledby="levelModalTitle">
+      <button class="level-modal__close" type="button" aria-label="Cerrar selector">×</button>
+      <h3 id="levelModalTitle">Elegí el nivel del desafío</h3>
+      <p>Todos los niveles están pensados para chicos de primaria. ¡Elegí tu aventura!</p>
+      <div class="level-buttons">
+        <button type="button" data-level="facil" class="level-btn level-easy">Nivel fácil</button>
+        <button type="button" data-level="intermedio" class="level-btn level-medium">Nivel intermedio</button>
+        <button type="button" data-level="desafiante" class="level-btn level-hard">Nivel desafiante</button>
+      </div>
+    </div>
+  </div>
 
   <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 </body>

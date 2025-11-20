@@ -7,6 +7,7 @@ import os
 import sys
 import shutil
 from pathlib import Path
+import importlib.util
 
 def print_header(text):
     print(f"\n{'='*50}")
@@ -29,19 +30,22 @@ def check_env_file():
     
     print("❌ No se encontró .env.example")
     return False
-
 def check_dependencies():
     """Verifica que estén instaladas las dependencias"""
     print("📦 Verificando dependencias...")
-    try:
-        import flask
-        import google.generativeai
-        import dotenv
+    required = ["flask", "google.generativeai", "dotenv"]
+    missing = []
+    for pkg in required:
+        if importlib.util.find_spec(pkg) is None:
+            missing.append(pkg)
+
+    if not missing:
         print("✅ Todas las dependencias están instaladas")
         return True
-    except ImportError as e:
-        print(f"❌ Falta instalar: {e}")
+    else:
+        print(f"❌ Faltan instalar: {', '.join(missing)}")
         print("   Ejecuta: pip install -r requirements.txt")
+        return False
         return False
 
 def check_folders():

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,9 +9,11 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/respuestas.css') }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:wght@400;700;900&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="css/respuesta.css">
 </head>
+
 <body>
   <header class="site-header">
     <div class="brand">GATTO</div>
@@ -39,24 +42,34 @@
     <section class="board respuesta-board">
       <div class="board-inner">
         <div class="answer-content">
-          <h3>Respuesta del profesor</h3>
-          <article class="answer">
-            <div id="answerRaw" class="answer-raw">{{ respuesta }}</div>
-            
-            <div class="slider" aria-live="polite">
-              <button id="prevBtn" class="slider-btn" aria-label="Anterior" title="Anterior">◀</button>
-              
-              <div>
-                <div class="slide-header">
-                  <h3 class="slide-title" id="slideTitle"></h3>
+          <h3>Respuesta del profesor 🐈</h3>
+          <p>🤔Tu pregunta: {{ duda }}</p>
+          <div style="display: flex; justify-content: space-between; ">
+            <article class="answer">
+              <div id="answerRaw" class="answer-raw">{{ respuesta }}</div>
+
+              <div class="slider" aria-live="polite">
+                <button id="prevBtn" class="slider-btn" aria-label="Anterior" title="Anterior">◀</button>
+
+                <div>
+                  <div class="slide-header">
+                    <h3 class="slide-title" id="slideTitle"></h3>
+                  </div>
+                  <div id="slideContent" class="slide-content" role="region" aria-live="polite"></div>
+                  <div class="slide-indicator" id="slideIndicator">0 / 0</div>
                 </div>
-                <div id="slideContent" class="slide-content" role="region" aria-live="polite"></div>
-                <div class="slide-indicator" id="slideIndicator">0 / 0</div>
+
+                <button id="nextBtn" class="slider-btn" aria-label="Siguiente" title="Siguiente">▶</button>
               </div>
-              
-              <button id="nextBtn" class="slider-btn" aria-label="Siguiente" title="Siguiente">▶</button>
-            </div>
-          </article>
+            </article>
+
+            <article>
+              <img src="{{ url_for('static', filename='img/respuesta_técnica.png') }}" class="mb-20"
+                class="cat-answer"
+                alt="Respuesta técnica">
+            </article>
+          </div>
+
         </div>
       </div>
     </section>
@@ -105,23 +118,23 @@
       }
 
       // Normalizamos: removemos el prefijo "1) " etc. en cada parte para una visual más limpia
-      parts = parts.map(p => p.replace(/^\d\)\s*/,'').trim());
+      parts = parts.map(p => p.replace(/^\d\)\s*/, '').trim());
 
       let idx = 0;
       const total = parts.length;
 
       function render() {
         let content = parts[idx] || '';
-        
+
         // Aplicar formato al contenido
         content = content
           // Convertir asteriscos en negritas HTML
           .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
           .replace(/\*(.*?)\*/g, '<strong>$1</strong>')
-          
+
           // Formatear listas manteniendo los guiones
           .replace(/[-•]\s+(.*)/g, '<div class="list-item">$1</div>')
-          
+
           // Agregar emojis contextuales
           .replace(/\b(número|suma|resta|multiplicación|división)\b/gi, '🔢 $1')
           .replace(/\b(planeta|tierra|sol|luna)\b/gi, '🌍 $1')
@@ -135,7 +148,7 @@
           ${getSlideEmoji(idx)}
         `;
         titleEl.innerHTML = `Parte ${idx + 1}: ${getSlideTitle(idx)}`;
-        
+
         prevBtn.disabled = idx === 0;
         nextBtn.disabled = idx === total - 1;
       }
@@ -174,4 +187,5 @@
     })();
   </script>
 </body>
+
 </html>

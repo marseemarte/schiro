@@ -1,6 +1,34 @@
 {
+  "name": "schiro",
+  "version": "1.0.0",
+  "description": "🐱 GATTO - Plataforma educativa interactiva con IA para estudiantes de primaria",
+  "main": "app.py",
+  "scripts": {
+    "dev": "python app.py",
+    "setup": "python setup.py",
+    "test": "pytest test_app.py -v",
+    "build": "tailwindcss -i ./static/css/tailwind.css -o ./static/css/output.css"
+  },
+  "keywords": [
+    "educación",
+    "IA",
+    "Gemini",
+    "primaria",
+    "Flutter",
+    "GATTO"
+  ],
+  "author": "marseemarte",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/marseemarte/schiro.git"
+  },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.15",
     "tailwindcss": "^4.1.15"
+  },
+  "devDependencies": {
+    "tailwindcss": "^4.1.15"
   }
 }
+

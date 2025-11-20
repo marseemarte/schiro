@@ -1,11 +1,19 @@
 import json
 import re
+import os
+from dotenv import load_dotenv
 
 from flask import Flask, render_template, request, redirect, url_for
 import google.generativeai as genai
 
-# Configurar la API de Gemini (poner tu API key)
-genai.configure(api_key="AIzaSyAwrl33_B2bjbggoB-DwOmcZ2YJcXlfamg")
+# Cargar variables de entorno
+load_dotenv()
+
+# Configurar la API de Gemini
+api_key = os.getenv("GEMINI_API_KEY")
+if not api_key:
+    raise ValueError("GEMINI_API_KEY no está configurada. Por favor, crea un archivo .env con tu API key.")
+genai.configure(api_key=api_key)
 
 app = Flask(__name__)
 
@@ -397,10 +405,11 @@ def get_questions_for_subject(subject: str, level: str):
 
     try:
         quiz_model = genai.GenerativeModel("gemini-2.0-flash-exp")
-        response = quiz_model.generate_content(prompt)
+        response = quiz_model.generate_content(prompt, timeout=30)
         payload = _extract_json_payload(getattr(response, "text", ""))
         questions = _normalize_questions(payload.get("questions", []))
-    except Exception:
+    except Exception as e:
+        print(f"Error generando preguntas: {e}")
         questions = []
 
     if len(questions) >= 10:
@@ -419,13 +428,23 @@ def buscar():
     duda = request.form.get("duda", "").strip()
     if not duda:
         return redirect(url_for('home'))
+    
+    # Validación básica
+    if len(duda) < 3 or len(duda) > 500:
+        return redirect(url_for('home'))
 
-    full_prompt = PROMPT_BASE + "\n\nDuda del alumno: " + duda
-    tutor_model = genai.GenerativeModel("gemini-2.5-flash")
-    response = tutor_model.generate_content(full_prompt)
-    respuesta = getattr(response, 'text', '')
+    try:
+        full_prompt = PROMPT_BASE + "\n\nDuda del alumno: " + duda
+        tutor_model = genai.GenerativeModel("gemini-2.5-flash")
+        response = tutor_model.generate_content(full_prompt, timeout=30)
+        respuesta = getattr(response, 'text', '')
+        
+        if not respuesta:
+            respuesta = "<p>⚠️ No pude generar una respuesta. Intenta reformular tu pregunta.</p>"
+    except Exception as e:
+        print(f"Error al procesar búsqueda: {e}")
+        respuesta = "<p>⚠️ Ocurrió un error al procesar tu pregunta. Por favor, intenta más tarde.</p>"
 
-    # Render en plantilla de respuesta
     return render_template("respuesta.html", duda=duda, respuesta=respuesta)
 
 
@@ -439,7 +458,11 @@ def test():
     if nivel not in DIFFICULTIES:
         nivel = "facil"
 
-    preguntas = get_questions_for_subject(materia, nivel)
+    try:
+        preguntas = get_questions_for_subject(materia, nivel)
+    except Exception as e:
+        print(f"Error cargando preguntas: {e}")
+        preguntas = FALLBACK_TESTS[materia][nivel]
 
     return render_template(
         "test.html",
@@ -451,4 +474,5 @@ def test():
     )
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Configuración para desarrollo
+    app.run(debug=os.getenv("FLASK_DEBUG", "False").lower() == "true")

@@ -453,6 +453,14 @@ body {
   border-radius: 18px;
 }
 
+.board-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
 .aprender-title {
   font-family: 'Chewy', cursive;
   font-size: 64px;

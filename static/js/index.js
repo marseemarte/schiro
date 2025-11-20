@@ -153,6 +153,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderQuestion();
   }
+
+  const alphabetToggle = document.querySelector('.alphabet-toggle');
+  const alphabetPanel = document.getElementById('alphabetPanel');
+  if (alphabetToggle && alphabetPanel) {
+    alphabetToggle.addEventListener('click', () => {
+      const isExpanded = alphabetToggle.getAttribute('aria-expanded') === 'true';
+      alphabetToggle.setAttribute('aria-expanded', String(!isExpanded));
+      alphabetPanel.classList.toggle('is-collapsed', isExpanded);
+    });
+  }
 });
 
 

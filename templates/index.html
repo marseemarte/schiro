@@ -14,9 +14,9 @@
   <header class="site-header">
     <div class="brand">GATTO</div>
     <nav class="main-nav">
-      <a href="#juegos" class="nav-chip chip-blue">Juegos</a>
-      <a href="#categorias" class="nav-chip chip-pink">Categorías</a>
-      <a href="#nosotros" class="nav-chip chip-green">Más sobre nosotros</a>
+      <a href="{{ url_for('home') }}#juegos" class="nav-chip chip-blue">Juegos</a>
+      <a href="{{ url_for('home') }}#abecedario" class="nav-chip chip-pink">Abecedario</a>
+      <a href="{{ url_for('home') }}#familias" class="nav-chip chip-green">Sobre nosotros</a>
     </nav>
     <a href="#contacto" class="btn-top">Trabajemos juntos</a>
   </header>
@@ -60,6 +60,91 @@
             <a href="{{ url_for('test', materia='Ed. Física') }}" data-materia="Ed. Física" class="subject pill-purple subject-link">Ed. Física</a>
             <a href="{{ url_for('test', materia='Inglés') }}" data-materia="Inglés" class="subject pill-sky subject-link">Inglés</a>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="alphabet" id="abecedario">
+      <button class="alphabet-toggle" type="button" aria-controls="alphabetPanel" aria-expanded="false">
+        <span>📚 Abecedario mágico</span>
+        <span class="toggle-icon">▼</span>
+      </button>
+      <div class="alphabet-inner is-collapsed" id="alphabetPanel">
+        <div class="alphabet-text">
+          <p class="alphabet-eyebrow">Nuevo</p>
+          <h2>Abecedario mágico</h2>
+          <p>Repasá cada letra, practicá su sonido y buscá palabras que empiecen igual. ¡Podés inventar un dibujo para cada una!</p>
+          <div class="alphabet-ideas" aria-label="Ideas para jugar con el abecedario">
+            <span>✨ Decí la letra en voz alta</span>
+            <span>🎨 Dibujá algo que empiece igual</span>
+            <span>🎵 Inventá un ritmo con sus sonidos</span>
+          </div>
+        </div>
+        {% set alphabet_items = [
+          {"letter": "A", "word": "Abeja", "emoji": "🐝"},
+          {"letter": "B", "word": "Ballena", "emoji": "🐋"},
+          {"letter": "C", "word": "Cohete", "emoji": "🚀"},
+          {"letter": "D", "word": "Dado", "emoji": "🎲"},
+          {"letter": "E", "word": "Estrella", "emoji": "⭐"},
+          {"letter": "F", "word": "Foca", "emoji": "🦭"},
+          {"letter": "G", "word": "Galleta", "emoji": "🍪"},
+          {"letter": "H", "word": "Helado", "emoji": "🍦"},
+          {"letter": "I", "word": "Isla", "emoji": "🏝️"},
+          {"letter": "J", "word": "Jirafa", "emoji": "🦒"},
+          {"letter": "K", "word": "Kiwi", "emoji": "🥝"},
+          {"letter": "L", "word": "Luna", "emoji": "🌙"},
+          {"letter": "M", "word": "Moto", "emoji": "🛵"},
+          {"letter": "N", "word": "Nido", "emoji": "🪺"},
+          {"letter": "O", "word": "Ojo", "emoji": "👁️"},
+          {"letter": "P", "word": "Pomelo", "emoji": "🍊"},
+          {"letter": "Q", "word": "Queso", "emoji": "🧀"},
+          {"letter": "R", "word": "Rosa", "emoji": "🌹"},
+          {"letter": "S", "word": "Sol", "emoji": "☀️"},
+          {"letter": "T", "word": "Tigre", "emoji": "🐯"},
+          {"letter": "U", "word": "Uvas", "emoji": "🍇"},
+          {"letter": "V", "word": "Vaso", "emoji": "🥛"},
+          {"letter": "W", "word": "Wifi", "emoji": "📶"},
+          {"letter": "X", "word": "Xilófono", "emoji": "🎶"},
+          {"letter": "Y", "word": "Yoyo", "emoji": "🪀"},
+          {"letter": "Z", "word": "Zorro", "emoji": "🦊"}
+        ] %}
+        <div class="alphabet-grid" aria-label="Listado de todas las letras del abecedario">
+          {% for card in alphabet_items %}
+            <div class="alphabet-card card-{{ loop.cycle('sun', 'sea', 'grape', 'mint', 'bubble') }}">
+              <div class="alphabet-letter" aria-hidden="true">{{ card.letter }}</div>
+              <span class="alphabet-emoji" aria-hidden="true">{{ card.emoji }}</span>
+              <p class="alphabet-word">{{ card.word }}</p>
+              <span class="sr-only">{{ card.letter }} de {{ card.word }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <section class="parents" id="familias">
+      <div class="parents-inner">
+        <div class="parents-text">
+          <p class="parents-eyebrow">Para las familias</p>
+          <h2>¿Qué es GATTO?</h2>
+          <p>GATTO es un asistente escolar pensado para acompañar a chicos y chicas de primaria. Elaboramos contenidos con IA supervisada, adaptados al nivel educativo y con recursos visuales para que aprender sea divertido.</p>
+        </div>
+        <div class="parents-cards">
+          <article class="parents-card">
+            <h3>Aprendizaje seguro</h3>
+            <p>Moderamos cada prompt y filtramos vocabulario para que las respuestas sean respetuosas, claras y apropiadas.</p>
+          </article>
+          <article class="parents-card">
+            <h3>Explicaciones paso a paso</h3>
+            <p>La IA responde siguiendo una estructura fija: resumen para la carpeta, explicación simple, ejemplos y actividades creativas.</p>
+          </article>
+          <article class="parents-card">
+            <h3>Juegos guiados</h3>
+            <p>Los tests y el abecedario incluyen tips y feedback inmediato para que cada práctica se transforme en un pequeño logro.</p>
+          </article>
+        </div>
+        <div class="parents-footer">
+          <p>¿Tenés sugerencias o querés sumar contenido? Escribinos y construyamos juntos una biblioteca escolar segura y colaborativa.</p>
+          <a class="parents-button" href="#contacto">Contactar al equipo</a>
         </div>
       </div>
     </section>
